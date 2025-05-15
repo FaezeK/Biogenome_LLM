@@ -11,4 +11,4 @@ Selected reference genomes were retrieved from the NIH National Library of Medic
 ## Model
 
 As mentioned DNABERT-2 model was used in this work. This model can be installed using the following code:
-<pre> ```bash # Bash git clone https://github.com/Zhihan1996/DNABERT_2.git cd DNABERT_2 ``` </pre>
+```bash # Bash git clone https://github.com/Zhihan1996/DNABERT_2.git cd DNABERT_2 ```
