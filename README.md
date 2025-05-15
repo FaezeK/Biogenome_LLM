@@ -11,7 +11,18 @@ Selected reference genomes were retrieved from the NIH National Library of Medic
 ## Model
 
 As mentioned DNABERT-2 model was used in this work. This model can be installed using the following code:
-```bash 
-  git clone https://github.com/Zhihan1996/DNABERT_2.git 
-  cd DNABERT_2
+```bash
+# clone repo
+git clone https://github.com/Zhihan1996/DNABERT_2.git
+
+# create conda env
+cd DNABERT_2
+conda create -n dnabert_2 python=3.8
+
+# install required packages
+python -m pip install -r requirements.txt
+
+# due to issues with triton, remove it
+pip uninstall triton
+pip install scikit-learn
 ```
