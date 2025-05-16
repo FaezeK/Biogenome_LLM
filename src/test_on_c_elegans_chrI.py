@@ -48,9 +48,10 @@ test_dataset = TextDataset(tokenizer=tokenizer, data_path=os.path.join(data_path
 mlm_model.to(device)
 mlm_model.eval()
 
-### Evaluate the model
+### Evaluate the model on the chrI prediction task and get highly predicted tokens and perplexity
 pred_df, val_cnt_df, perplexity = evaluate.eval_dnabert2(test_dataset, mlm_model, tokenizer)
 
+### Save the prediction on chrI, highly predicted tokens and perplexity
 pred_df.to_csv(sys.argv[2]+'_'+sys.argv[3]+'_pred_'+sys.argv[4]+'.txt', sep='\t', index=False, header=False)
 val_cnt_df.to_csv(sys.argv[2]+'_'+sys.argv[3]+'_top_tokens_'+sys.argv[4]+'.txt', sep='\t', index=False)
 pd.Series(perplexity).to_csv(sys.argv[2]+'_'+sys.argv[3]+'_perplexity_'+sys.argv[4]+'.txt', sep='\t', index=False, header=False)
