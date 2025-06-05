@@ -16,7 +16,7 @@ def eval_dnabert2(test_dataset, model, tokenizer):
     all_predicted_tokens = []
     all_pred_probs = []
     # list to store log prob to find perplexity
-    all_log_probs = []
+    ce_loss_probs = []
     
     # set up data loader
     data_loader = DataLoader(test_dataset, batch_size=1, shuffle=True)
@@ -50,10 +50,9 @@ def eval_dnabert2(test_dataset, model, tokenizer):
                 predicted_token_prob = np.round(torch.max(probs).item(), 2)
                 predicted_token_probs.append(predicted_token_prob)
                 
-                # to calculate perplexity, find log prob
-                log_probs = torch.nn.functional.log_softmax(logits, dim=-1)
-                correct_log_probs = log_probs[input_ids[0, token_idx]].item()
-                all_log_probs.append(correct_log_probs)
+                # to calculate perplexity
+                ce_loss = torch.nn.functional.cross_entropy(logits.unsqueeze(0), input_ids[0, token_idx].unsqueeze(0))
+                ce_loss_probs.append(ce_loss.item())
                 
                 # get token ids of non-special tokens
                 indices.append(token_idx)
@@ -95,7 +94,7 @@ def eval_dnabert2(test_dataset, model, tokenizer):
     val_cnt_df = pd.DataFrame({'token':top_frequently_predicted_tokens, 'freq':val_cnt[0:3]})
     
     # Compute perplexity
-    avg_log_prob = torch.as_tensor(all_log_probs).mean()
-    perplexity = torch.exp(-avg_log_prob).item()
+    avg_ce_loss_prob = torch.as_tensor(ce_loss_probs).mean()
+    perplexity = torch.exp(avg_ce_loss_prob).item()
         
     return pred_df, val_cnt_df, perplexity
